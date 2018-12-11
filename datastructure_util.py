@@ -1,4 +1,6 @@
 from com.bridgelab.util.utility import Utility
+import random
+import json
 
 
 class Node:
@@ -244,7 +246,7 @@ class LinkedList:
 
         :return:this will return each data in LinkedList
         """
-        list=[]
+        list = []
         traverse = self.head
 
         if self.head == None:
@@ -577,7 +579,7 @@ class Stack:
 
 
 stack = Stack()
-stack1=Stack()
+stack1 = Stack()
 string = "{(([{}]))}"
 
 for i in string:
@@ -1267,7 +1269,6 @@ class HashTable:
             index = self.hash_function(elements[i])
             self.objects_list[index].append(elements[i])
 
-
     def search(self, data):
         """
         This method is used to search data which is given by user in hashtable data structure.
@@ -1322,8 +1323,269 @@ class HashTable:
         for i in file:
             print(i)
 
+
+# #
+# h = HashTable()
+# h.insert()
+# print(h.search(26))
+# h.file_update(26)
 #
-h = HashTable()
-h.insert()
-print(h.search(26))
-h.file_update(26)
+
+class DeckOfCards:
+
+    def __init__(self):
+        pass
+
+    def shuffle(self):
+        suits = ["Clubs", "Diamonds", "Hearts", "Spades"]
+        Rank = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+
+        list_cards = []
+        card_suits = ''
+
+        while len(list_cards) < 36:
+            for i in range(0, 9):
+
+                cards_rank = ''
+
+                random_no = random.randint(1, 13)
+
+                cards_rank = Rank[random_no - 1]
+                if cards_rank == "Ace" or cards_rank == "Jack" or cards_rank == "Queen" or cards_rank == "King":
+                    pass
+                random_no_suits = random.randint(0, 3)
+                cards_rank = cards_rank + ' ' + suits[random_no_suits]
+
+                if list_cards.__contains__(cards_rank) is False:
+
+                    if len(list_cards) is not 36:
+                        list_cards.append(cards_rank)
+
+        row = 4
+        column = 9
+        two_d_array = [[0 for j in range(column)] for i in range(row)]
+        index = 0
+        for i in range(row):
+
+            for j in range(column):
+                two_d_array[i][j] = list_cards[index]
+                index += 1
+
+        print('\n')
+        for i in range(row):
+            print('Player ->', i + 1, ' ', end='')
+            for j in range(column):
+                print(two_d_array[i][j], end='  ')
+
+            print()
+        return list_cards
+
+
+card = DeckOfCards()
+
+# s_f={"Stock Report":[{"Stock Name":"GOOGLE   ","Number of Share":15,"Share Price":1000},{"Stock Name":"MICROSOFT","Number of Share":10,"Share Price":1000},{"Stock Name":"IBM      ","Number of Share":10,"Share Price":1000}]}
+# with open('../util/Stock Report', 'w') as jf:
+#     jf.write(json.dumps(s_f))
+#     jf.close()
+
+with open('../util/Stock Report', 'r') as jf:
+    json_str = jf.read()
+    jf.close()
+    json_value = json.loads(json_str)
+
+
+class StockReport:
+
+
+    def __init__(self, json_value):
+        self.json_value = json_value
+
+
+    def stock_report(self):
+        count = 0
+        count1 = 1
+        for i in range(len(json_value['Stock Report'])):
+            count1 = 1
+            for key in (json_value['Stock Report'][i]):
+
+                if i == 0 and count == 0:
+                    for key1 in (json_value['Stock Report'][0]):
+                        print(key1, end='  ')
+                        count += 1
+                        if count == len(json_value['Stock Report'][0]):
+                            print(' Total Price ', end='')
+
+                    print()
+
+                print(json_value['Stock Report'][i][key], end='            ')
+                if count1 == len(json_value['Stock Report'][i]):
+                    print(
+                        json_value['Stock Report'][i]['Number of Share'] * json_value['Stock Report'][i]['Share Price'], end='')
+
+                count1 += 1
+            print()
+
+
+sr = StockReport(json_value)
+
+# sr.stock_report()
+
+
+class StockAccount:
+    pass
+
+
+# P = {
+#     "Person": [{
+#         "Name": "Saurabh",
+#         "Email id": "singh.saurabh3333@gmail.com",
+#         "Address": "Kandivali",
+#         "Contact": 9137722561,
+#         "Number of Share":0
+#         "Total Balance": 10000
+#     },
+#         {
+#             "Name": "Aman",
+#             "Email id": "singh.aman33@gmail.com",
+#             "Address": "Kandivali",
+#             "Contact": 9137722558,
+#             "Number of Share":0,
+#             "Total Balance": 10000
+#         }
+#     ]
+#
+# }
+#
+# with open('../util/Person.json', 'w') as person_jf:
+#     person_jf.write(json.dumps(P))
+#     person_jf.close()
+
+
+class Person:
+
+    def __init__(self, stock_jf, utility_obj, person_json_value):
+        self.stock_jf = stock_jf
+        self.utility_obj = utility_obj
+        self.person_json_value = person_json_value
+
+    def add_new_person(self):
+        print('Enter Your Name')
+        name = self.utility_obj.get_string()
+        print('Enter Your Email Id')
+        emailid = self.utility_obj.get_string()
+        print('Enter Your Address')
+        address = self.utility_obj.get_string()
+        print('Enter Your Contact Number')
+        number = self.utility_obj.get_int()
+        print("Enter Number of share if yoy have any ,else enter zero")
+        share_no=balance = Utility().get_int()
+        print('Enter Your Total Balance')
+        balance = Utility().get_int()
+
+        new_person_dict = {"Name": name,
+                           "Email id": emailid,
+                           "Address": address,
+                           "Contact": number,
+                           "Number of Share":share_no,
+                           "Total Balance": balance}
+
+        with open('../util/Person.json', 'w') as person_jf:
+            person_json_value['Person'].append(new_person_dict)
+
+            person_jf.write(json.dumps(person_json_value))
+            person_jf.close()
+
+    def buy_share(self):
+
+        for i in range(len(self.stock_jf['Stock Report'])):
+            print(i, self.stock_jf['Stock Report'][i])
+
+        print('Enter Which Company Share you want to buy')
+        choice = self.utility_obj.get_int()
+
+        print('Enter Number of Share You want to buy')
+        buy_share = self.utility_obj.get_int()
+        each_share_price = self.stock_jf['Stock Report'][choice]['Share Price']
+        amount_pay = buy_share * each_share_price
+        person_updated_balance = self.person_json_value['Person'][1]["Total Balance"] - amount_pay
+
+        with open("Person.json", "w") as jf:
+            person_json_value['Person'][1]['Total Balance'] = person_updated_balance
+            person_json_value['Person'][1]['Number of Share']=buy_share
+            jf.write(json.dumps(person_json_value))
+            jf.close()
+
+        updated_stock_share = self.stock_jf["Stock Report"][choice]["Number of Share"] - buy_share
+
+        with open("Stock Report", "w") as jf:
+            self.stock_jf["Stock Report"][choice]["Number of Share"] = updated_stock_share
+            jf.write(json.dumps(self.stock_jf))
+            jf.close()
+
+    def sell_share(self):
+
+        print("1.Existing Customer\n 2.New Customer")
+        ch=utility_obj.get_int()
+
+        if ch==1:
+
+            i = 0
+            print('Enter Your Name')
+            existing_person = self.utility_obj.get_string()
+            while i < len(person_json_value["Person"]):
+                if person_json_value["Person"][i].get('Name', -1) == existing_person:
+                    index = i
+
+                i += 1
+            print('Do You Want Your Details? Y / N')
+            detail_choice=utility_obj.get_string()
+            if detail_choice=='Y' or detail_choice=='y':
+                print(person_json_value["Person"][index])
+            if detail_choice == 'N' or detail_choice == 'n':
+                pass
+
+        if ch==2:
+            print("You Need to Register Yourself first.So We request you to Kindly provide your details accordingly")
+            self.add_new_person()
+            return self.sell_share()
+        print('Enter choice to sell your share to particular company')
+        for i in range(len(self.stock_jf['Stock Report'])):
+            print(i, self.stock_jf['Stock Report'][i])
+
+        choice = self.utility_obj.get_int()
+
+        print('Enter Number of share you want to sell to', self.stock_jf['Stock Report'][choice]['Stock Name'],
+              'company')
+        sell_share = self.utility_obj.get_int()
+        updated_stock_share = self.stock_jf["Stock Report"][choice]["Number of Share"] + sell_share
+
+        with open("Stock Report", "w") as jf:
+            self.stock_jf["Stock Report"][choice]["Number of Share"] = updated_stock_share
+            jf.write(json.dumps(self.stock_jf))
+            jf.close()
+
+        updated_person_share=self.person_json_value['Person'][index]["Number of Share"]-sell_share
+        print("Enter price for per share you want from company")
+        person_share_price=self.utility_obj.get_int()
+        person_updated_balance = self.person_json_value['Person'][index]["Total Balance"]+person_share_price*sell_share
+
+        with open("Person.json", "w") as jf:
+            person_json_value['Person'][index]['Total Balance'] = person_updated_balance
+            person_json_value['Person'][index]['Number of Share'] = updated_person_share
+            jf.write(json.dumps(person_json_value))
+            jf.close()
+
+with open('../util/Stock Report', 'r') as jf:
+    json_str = jf.read()
+    jf.close()
+    json_value = json.loads(json_str)
+
+with open('../util/Person.json', 'r') as person_jf:
+    json_person_str = person_jf.read()
+    person_jf.close()
+    person_json_value = json.loads(json_person_str)
+
+person_obj = Person(json_value, Utility(), person_json_value)
+# person_obj.add_new_person()
+# person_obj.buy_share()
+person_obj.sell_share()
